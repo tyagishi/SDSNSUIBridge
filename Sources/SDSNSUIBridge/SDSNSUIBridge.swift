@@ -15,6 +15,8 @@ public typealias NSUIFont = NSFont
 import UIKit
 public typealias NSUIColor = UIColor
 public typealias NSUIFont = UIFont
+#else
+#error("unsupported platform")
 #endif
 
 #if os(macOS)
