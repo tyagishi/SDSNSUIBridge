@@ -5,6 +5,10 @@ import PackageDescription
 
 let package = Package(
     name: "SDSNSUIBridge",
+    platforms: [
+        .macOS(.v13),
+        .iOS(.v15),
+    ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
@@ -21,8 +25,8 @@ let package = Package(
         .target(
             name: "SDSNSUIBridge",
             dependencies: []),
-        .testTarget(
-            name: "SDSNSUIBridgeTests",
-            dependencies: ["SDSNSUIBridge"]),
+//        .testTarget(
+//            name: "SDSNSUIBridgeTests",
+//            dependencies: ["SDSNSUIBridge"]),
     ]
 )
