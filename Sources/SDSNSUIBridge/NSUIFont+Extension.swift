@@ -38,7 +38,6 @@ extension NSUIFont {
                                          traits: [.italicFontMask,.boldFontMask],
                                          weight: 0, size: fontSize) ?? NSUIFont.systemFont(ofSize: fontSize)
 #elseif os(iOS)
-        // TODO: find italic AND bold
         guard let fontDesc = UIFont.systemFont(ofSize: fontSize).fontDescriptor.withSymbolicTraits([.traitBold, .traitItalic]) else {
             return UIFont.systemFont(ofSize: fontSize)
         }
