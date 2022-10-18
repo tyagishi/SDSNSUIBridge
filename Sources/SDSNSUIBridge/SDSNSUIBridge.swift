@@ -11,10 +11,14 @@ import Foundation
 import AppKit
 public typealias NSUIColor = NSColor
 public typealias NSUIFont = NSFont
+public typealias NSUIEvent = NSEvent
+public typealias NSUIMenu = NSMenu
 #elseif os(iOS)
 import UIKit
 public typealias NSUIColor = UIColor
 public typealias NSUIFont = UIFont
+public typealias NSUIEvent = UIEvent
+public typealias NSUIMenu = UIMenu
 #else
 #error("unsupported platform")
 #endif
