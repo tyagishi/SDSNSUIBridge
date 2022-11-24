@@ -21,4 +21,9 @@ extension NSUIColor {
         return UIColor.label
 #endif
     }
+#if os(iOS)
+    static public var textColor: NSUIColor {
+        return UIColor.label
+    }
+#endif
 }
