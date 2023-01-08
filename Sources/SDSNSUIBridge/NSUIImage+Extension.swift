@@ -33,6 +33,11 @@ extension NSUIImage {
     public convenience init?(contentsOf url: URL) {
         self.init(contentsOfFile: url.absoluteString)
     }
+    public convenience init(cgImage: CGImage, size: CGSize) {
+        let scale = size.width / CGFloat(cgImage.width)
+        self.init(cgImage: cgImage, scale: scale, orientation: UIImage.Orientation.up)
+    }
+
 #endif
 #if os(macOS)
     public var toCGImage: CGImage? {
