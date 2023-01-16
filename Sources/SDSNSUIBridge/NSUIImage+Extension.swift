@@ -16,6 +16,8 @@ import UIKit
 #endif
 
 extension NSUIImage {
+
+    
 #if os(macOS)
     // compatible with UIImage
     public convenience init(ciImage: CIImage) {
