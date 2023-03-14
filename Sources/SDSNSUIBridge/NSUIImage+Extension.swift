@@ -64,6 +64,48 @@ extension NSUIImage {
         return nil
     }
 #endif
+
+    public enum NSUIImageOrientation: String, RawRepresentable {
+        case up, down, left, right
+        case upMirrored, downMirrored, leftMirrored, rightMirrored
+        //UIImageOrientationUp,            // default orientation
+        //UIImageOrientationDown,          // 180 deg rotation
+        //UIImageOrientationLeft,          // 90 deg CCW
+        //UIImageOrientationRight,         // 90 deg CW
+        //UIImageOrientationUpMirrored,    // as above but image mirrored along other axis. horizontal flip
+        //UIImageOrientationDownMirrored,  // horizontal flip
+        //UIImageOrientationLeftMirrored,  // vertical flip
+        //UIImageOrientationRightMirrored, // vertical flip
+    }
+
+
+    public var nsuiImageOrientation: NSUIImage.NSUIImageOrientation {
+#if os(macOS)
+        return .up
+#elseif os(iOS)
+        switch self.imageOrientation {
+        case .up:
+            return .up
+        case .down:
+            return .down
+        case .left:
+            return .left
+        case .right:
+            return .right
+        case .upMirrored:
+            return .upMirrored
+        case .downMirrored:
+            return .downMirrored
+        case .leftMirrored:
+            return .leftMirrored
+        case .rightMirrored:
+            return .rightMirrored
+        @unknown default:
+            return .up
+        }
+#endif
+    }
+
 }
 
 extension Image {
@@ -73,5 +115,84 @@ extension Image {
 #elseif os(iOS)
         self.init(uiImage: nsuiImage)
 #endif
+    }
+}
+extension NSUIImage {
+    public func orientationFixed() -> NSUIImage {
+        #if os(macOS)
+        return self
+        #elseif os(iOS)
+        guard self.imageOrientation != .up else {
+            return self
+        }
+
+        let size = self.size
+        let imageOrientation = self.imageOrientation
+
+        var transform: CGAffineTransform = .identity
+
+        switch self.imageOrientation {
+        case .down, .downMirrored:
+            transform = transform.translatedBy(x: size.width, y: size.height)
+            transform = transform.rotated(by: CGFloat.pi)
+        case .left, .leftMirrored:
+            transform = transform.translatedBy(x: size.width, y: 0)
+            transform = transform.rotated(by: CGFloat.pi / 2.0)
+        case .right, .rightMirrored:
+            transform = transform.translatedBy(x: 0, y: size.height)
+            transform = transform.rotated(by: CGFloat.pi / -2.0)
+        case .up, .upMirrored:
+            break
+        @unknown default:
+            break
+        }
+
+        // Flip image one more time if needed to, this is to prevent flipped image
+        switch imageOrientation {
+        case .upMirrored, .downMirrored:
+            transform = transform.translatedBy(x: size.width, y: 0)
+            transform = transform.scaledBy(x: -1, y: 1)
+        case .leftMirrored, .rightMirrored:
+            transform = transform.translatedBy(x: size.height, y: 0)
+            transform = transform.scaledBy(x: -1, y: 1)
+        case .up, .down, .left, .right:
+            break
+        @unknown default:
+            break
+        }
+
+        guard var cgImage = self.cgImage else {
+            return self
+        }
+
+        autoreleasepool {
+            var context: CGContext?
+
+            guard let colorSpace = cgImage.colorSpace, let _context = CGContext(data: nil, width: Int(self.size.width), height: Int(self.size.height), bitsPerComponent: cgImage.bitsPerComponent, bytesPerRow: 0, space: colorSpace, bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else {
+                return
+            }
+            context = _context
+
+            context?.concatenate(transform)
+
+            var drawRect: CGRect = .zero
+            switch imageOrientation {
+            case .left, .leftMirrored, .right, .rightMirrored:
+                drawRect.size = CGSize(width: size.height, height: size.width)
+            default:
+                drawRect.size = CGSize(width: size.width, height: size.height)
+            }
+
+            context?.draw(cgImage, in: drawRect)
+
+            guard let newCGImage = context?.makeImage() else {
+                return
+            }
+            cgImage = newCGImage
+        }
+
+        let uiImage = UIImage(cgImage: cgImage, scale: 1, orientation: .up)
+        return uiImage
+        #endif
     }
 }
