@@ -26,6 +26,17 @@ public typealias NSUIImage = UIImage
 #error("unsupported platform")
 #endif
 
+// MARK: NSView/UIView
+#if os(macOS)
+import AppKit
+public typealias NSUITextView = NSTextView
+public typealias NSUIScrollView = NSScrollView
+#elseif os(iOS)
+import UIKit
+public typealias NSUITextView = UITextView
+public typealias NSUIScrollView = UIScrollView // note: UITextView inherits UIScrollView
+#endif
+
 #if os(macOS)
 public typealias EditActions = NSTextStorageEditActions
 #elseif os(iOS)
