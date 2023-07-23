@@ -30,10 +30,12 @@ public typealias NSUIImage = UIImage
 #if os(macOS)
 import AppKit
 public typealias NSUITextView = NSTextView
+public typealias NSUITextViewDelegate = NSTextViewDelegate
 public typealias NSUIScrollView = NSScrollView
 #elseif os(iOS)
 import UIKit
 public typealias NSUITextView = UITextView
+public typealias NSUITextViewDelegate = UITextViewDelegate
 public typealias NSUIScrollView = UIScrollView // note: UITextView inherits UIScrollView
 #endif
 
