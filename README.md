@@ -16,5 +16,4 @@ and try to implement complemental methods
 ### NSUIMenu = NSMenu / UIMenu
 
 ## Views
-### NSUITextView = NSTextView / UITextView
 ### NSUIScrollView = NSScrollView / UIScrollView
