@@ -14,6 +14,7 @@ public typealias NSUIFont = NSFont
 public typealias NSUIEvent = NSEvent
 public typealias NSUIMenu = NSMenu
 public typealias NSUIImage = NSImage
+public typealias NSUIView = NSView
 
 #elseif os(iOS)
 import UIKit
@@ -22,6 +23,7 @@ public typealias NSUIFont = UIFont
 public typealias NSUIEvent = UIEvent
 public typealias NSUIMenu = UIMenu
 public typealias NSUIImage = UIImage
+public typealias NSUIView = UIView
 #else
 #error("unsupported platform")
 #endif
