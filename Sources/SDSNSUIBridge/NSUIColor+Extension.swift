@@ -14,15 +14,16 @@ import UIKit
 #endif
 
 extension NSUIColor {
-    static public var labelElementColor: NSUIColor {
+    public static var labelElementColor: NSUIColor {
 #if os(macOS)
         return NSColor.labelColor
 #elseif os(iOS)
         return UIColor.label
 #endif
     }
+
 #if os(iOS)
-    static public var textColor: NSUIColor {
+    public static var textColor: NSUIColor {
         return UIColor.label
     }
 #endif

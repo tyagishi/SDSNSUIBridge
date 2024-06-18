@@ -16,8 +16,6 @@ import UIKit
 #endif
 
 extension NSUIImage {
-
-    
 #if os(macOS)
     // compatible with UIImage
     public convenience init(ciImage: CIImage) {
@@ -25,7 +23,6 @@ extension NSUIImage {
         self.init(size: .zero)
         addRepresentation(rep)
     }
-
 #elseif os(iOS)
     // compatible with NSImage
     public convenience init?(systemSymbolName: String, accessibilityDescription: String?) {
@@ -39,7 +36,6 @@ extension NSUIImage {
         let scale = size.width / CGFloat(cgImage.width)
         self.init(cgImage: cgImage, scale: scale, orientation: UIImage.Orientation.up)
     }
-
 #endif
 #if os(macOS)
     public var toCGImage: CGImage? {
@@ -66,6 +62,7 @@ extension NSUIImage {
 #endif
 
     public enum NSUIImageOrientation: String, RawRepresentable {
+        // swiftlint:disable:next identifier_name
         case up, down, left, right
         case upMirrored, downMirrored, leftMirrored, rightMirrored
         //UIImageOrientationUp,            // default orientation
@@ -77,7 +74,6 @@ extension NSUIImage {
         //UIImageOrientationLeftMirrored,  // vertical flip
         //UIImageOrientationRightMirrored, // vertical flip
     }
-
 
     public var nsuiImageOrientation: NSUIImage.NSUIImageOrientation {
 #if os(macOS)
@@ -105,7 +101,6 @@ extension NSUIImage {
         }
 #endif
     }
-
 }
 
 extension Image {
@@ -118,6 +113,7 @@ extension Image {
     }
 }
 extension NSUIImage {
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
     public func orientationFixed() -> NSUIImage {
         #if os(macOS)
         return self
@@ -168,10 +164,15 @@ extension NSUIImage {
         autoreleasepool {
             var context: CGContext?
 
-            guard let colorSpace = cgImage.colorSpace, let _context = CGContext(data: nil, width: Int(self.size.width), height: Int(self.size.height), bitsPerComponent: cgImage.bitsPerComponent, bytesPerRow: 0, space: colorSpace, bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else {
+            guard let colorSpace = cgImage.colorSpace,
+                  let tmpContext = CGContext(data: nil, width: Int(self.size.width),
+                                             height: Int(self.size.height),
+                                             bitsPerComponent: cgImage.bitsPerComponent,
+                                             bytesPerRow: 0, space: colorSpace,
+                                             bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else {
                 return
             }
-            context = _context
+            context = tmpContext
 
             context?.concatenate(transform)
 
@@ -191,8 +192,7 @@ extension NSUIImage {
             cgImage = newCGImage
         }
 
-        let uiImage = UIImage(cgImage: cgImage, scale: 1, orientation: .up)
-        return uiImage
+        return uiImage = UIImage(cgImage: cgImage, scale: 1, orientation: .up)
         #endif
     }
 }
