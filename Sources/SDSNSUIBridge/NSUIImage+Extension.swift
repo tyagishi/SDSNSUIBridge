@@ -192,7 +192,7 @@ extension NSUIImage {
             cgImage = newCGImage
         }
 
-        return uiImage = UIImage(cgImage: cgImage, scale: 1, orientation: .up)
+        return UIImage(cgImage: cgImage, scale: 1, orientation: .up)
         #endif
     }
 }
