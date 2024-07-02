@@ -15,6 +15,9 @@ public typealias NSUIEvent = NSEvent
 public typealias NSUIMenu = NSMenu
 public typealias NSUIImage = NSImage
 public typealias NSUIView = NSView
+public typealias NSUIScrollView = NSScrollView
+
+public typealias NSUIPasteboard = NSPasteboard
 
 #elseif os(iOS)
 import UIKit
@@ -24,15 +27,10 @@ public typealias NSUIEvent = UIEvent
 public typealias NSUIMenu = UIMenu
 public typealias NSUIImage = UIImage
 public typealias NSUIView = UIView
+public typealias NSUIScrollView = UIScrollView // note: UITextView inherits UIScrollView
+
+public typealias NSUIPasteboard = UIPasteboard
+
 #else
 #error("unsupported platform")
-#endif
-
-// MARK: NSView/UIView
-#if os(macOS)
-import AppKit
-public typealias NSUIScrollView = NSScrollView
-#elseif os(iOS)
-import UIKit
-public typealias NSUIScrollView = UIScrollView // note: UITextView inherits UIScrollView
 #endif
