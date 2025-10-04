@@ -37,6 +37,18 @@ extension NSUIImage {
         self.init(cgImage: cgImage, scale: scale, orientation: UIImage.Orientation.up)
     }
 #endif
+    
+#if os(macOS)
+    // for conpatibility, this functionality should be function not property
+    public func pngData() -> Data? {
+        guard let tiffRepresentation = tiffRepresentation,
+              let bitmapRep = NSBitmapImageRep(data: tiffRepresentation) else {
+            return nil
+        }
+        return bitmapRep.representation(using: .png, properties: [:])
+    }
+#endif
+    
 #if os(macOS)
     public var toCGImage: CGImage? {
         return cgImage(forProposedRect: nil, context: nil, hints: nil)
